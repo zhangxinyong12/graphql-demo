@@ -10,7 +10,7 @@ const schema = buildSchema(`
   type User {
     id: ID
     name: String,
-    children:User
+    children:Int
   }
 `);
 const user = { id: 21523454, name: 'my name is ' };
