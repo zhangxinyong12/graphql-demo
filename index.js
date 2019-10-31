@@ -1,16 +1,30 @@
-var express = require('express');
-var graphqlHTTP = require('express-graphql');
-var { buildSchema } = require('graphql');
+const express = require('express');
+const graphqlHTTP = require('express-graphql');
+const { buildSchema } = require('graphql');
 
-var schema = buildSchema(`
+const schema = buildSchema(`
   type Query {
-    hello: String
+    me: User
+  }
+  
+  type User {
+    id: ID
+    name: String,
+    children:User
   }
 `);
+const user = { id: 21523454, name: 'my name is ' };
+// 定义不同字段应该如何拿到数据
+const root = {
+    me: () => user,
+    id: () => user.id,
+    name: () => user.name,
+    children: () => user
+};
 
-var root = { hello: () => 'Hello world!' };
-
-var app = express();
+const app = express();
+// 具体查询url 注意和以前的方式不一样
+// http://localhost:4000/graphql?query={hello,name,age,...}
 app.use('/graphql', graphqlHTTP({
     schema: schema,
     rootValue: root,
