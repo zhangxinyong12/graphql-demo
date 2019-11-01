@@ -5,27 +5,54 @@ const { ApolloServer, gql } = require('apollo-server-express');
 const typeDefs = gql`
   type Book {
     title: String
-    author: String
+    author: Author
+  }
+  type Author{
+    name: String
+    books: [Book]
   }
   type Query {
     books: [Book]
+    getBooks: [Book]
+    getAuthors: [Author]
   }
+
+# Mutation 写的操作
+    type Mutation{
+        addBook(title:String,author:String):Book
+    }
 `;
 const books = [
     {
         title: 'Harry Potter and the Chamber of Secrets',
-        author: 'J.K. Rowling',
+        author: {
+            name: 'namexx',
+            books: []
+        },
     },
     {
         title: 'Jurassic Park',
-        author: 'Michael Crichton',
-    },
+        author: {
+            name: 'namexx',
+            books: []
+        },
+    }
+
 ];
 // Provide resolver functions for your schema fields
 const resolvers = {
     Query: {
         books: () => books,
+        getBooks: () => books,
+        getAuthors: () => books.map((item) => item.author),
     },
+    Mutation: {
+        // $ 对应获取参数
+        addBook: ($title, $author) => {
+            console.log($title, $author);
+            return []
+        }
+    }
 };
 
 const server = new ApolloServer({ typeDefs, resolvers });
