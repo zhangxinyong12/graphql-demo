@@ -47,10 +47,16 @@ const resolvers = {
         getAuthors: () => books.map((item) => item.author),
     },
     Mutation: {
-        // $ 对应获取参数
+        // $ 对应获取参数 注意要和你定义的字段对应
         addBook: ($title, $author) => {
             console.log($title, $author);
-            return []
+            books.push({
+                title: $title,
+                author: {
+                    name: $author
+                }
+            });
+            return books;
         }
     }
 };
