@@ -49,7 +49,7 @@ const resolvers = {
     Mutation: {
         // $ 对应获取参数 注意要和你定义的字段对应
         addBook: ($title, $author) => {
-            console.log($title, $author);
+            console.log($author);
             books.push({
                 title: $title,
                 author: {
